@@ -1,0 +1,29 @@
+{
+  "name": "hackernews",
+  "version": "1.0.0",
+  "description": "",
+  "author": "wallecnik",
+  "license": "ISC",
+  "repository": {
+    "url": "https://github.com/wallecnik/smartlook_backend"
+  },
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "koa": "^2.13.1",
+    "koa-mount": "^4.0.0",
+    "koa-router": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.13.1",
+    "@types/koa-mount": "^4.0.0",
+    "@types/koa-router": "^7.4.1",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "eslint": "^7.21.0",
+    "typescript": "^3.3.3"
+  }
+}
