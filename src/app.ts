@@ -1,22 +1,18 @@
 import Application from "koa";
-import Router from "koa-router";
-import { responseTimeLogger } from "./middleware/ResponseTimeLogger"
+import logger from "koa-logger";
+import bodyParser from "koa-bodyparser";
+import json from "koa-json";
+import collectionsRouter from "./router/CollectionRouter";
 
-const mount = require('koa-mount');
+
 const app = new Application();
-const router = new Router();
 const port = 3000;
 
-app.use(responseTimeLogger);
-
-app.use(mount(require('./router/car.js')))
-
-app.use(router.routes())
-
-// app.use(async (ctx) => {
-//     ctx.body = "Hello World";
-// });
+app.use(logger())
+app.use(bodyParser());
+app.use(json());
+app.use(collectionsRouter.routes())
 
 app.listen(port, () => {
-    console.log(`Listening on localhost:${port}`);
+    console.log(`Server running at localhost:${port}`);
 });
