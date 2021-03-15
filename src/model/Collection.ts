@@ -1,12 +1,12 @@
+export = class Collection {
 
-export class Collection {
+    readonly id: string
+    readonly name: string
+    readonly owner_id: number
 
-    readonly collection_name: string
-    readonly collection_owner_id: bigint
-
-
-    constructor(collection_name: string, collection_owner_id: bigint) {
-        this.collection_name = collection_name;
-        this.collection_owner_id = collection_owner_id;
+    constructor(id: string, name: string, owner_id: number) {
+        this.id = id;
+        this.name = name;
+        this.owner_id = owner_id;
     }
 }

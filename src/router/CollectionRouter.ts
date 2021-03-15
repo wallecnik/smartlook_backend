@@ -1,8 +1,15 @@
 import Router from "koa-router";
-import CollectionDao from "../service/CollectionDao";
+import CollectionService from "../service/CollectionService";
 
 const router = new Router();
-const dao = new CollectionDao();
+const dao = new CollectionService();
+
+router.get('/collection', async (ctx) => {
+    await dao.getAllCollections()
+        .then(response => {
+            ctx.body = response
+        })
+});
 
 router.get('/collection/:id', async (ctx) => {
     await dao.getCollection(ctx.params.id)
