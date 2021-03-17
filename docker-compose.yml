@@ -16,6 +16,11 @@ services:
       - elk
     volumes:
       - sl-elastic:/usr/share/elasticsearch/data
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1" ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
     environment:
       - ES_JAVA_OPTS=-Xms256m -Xmx256m
       - discovery.type=single-node
@@ -25,7 +30,8 @@ services:
       - 9200
   kibana:
     depends_on:
-      - elastic
+      elastic:
+        condition: service_healthy
     image: docker.elastic.co/kibana/kibana-oss:7.10.2
     container_name: sl-kibana
     networks:
@@ -38,13 +44,22 @@ services:
       - 5601:5601
     expose:
       - 5601
-#  node:
-#    build: .
-#    container_name: sl-node
-#    volumes:
-#      - sl-node:/usr/share/node/data
-#    ports:
-#      - 3000:3000
+  node:
+    depends_on:
+      elastic:
+        condition: service_healthy
+    build: .
+    container_name: sl-node
+    networks:
+      - elk
+    volumes:
+      - sl-node:/usr/share/node/data
+    environment:
+      - ELASTICSEARCH_HOST=elastic:9200
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
 volumes:
   sl-elastic:
     driver: local

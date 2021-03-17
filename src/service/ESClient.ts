@@ -1,7 +1,7 @@
 import {Client} from "elasticsearch";
 
 export = new Client({
-    host: 'localhost:9200',
+    host: process.env.ELASTICSEARCH_HOST,
     log: 'trace',
     apiVersion: '7.x'
 });

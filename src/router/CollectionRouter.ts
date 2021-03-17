@@ -14,7 +14,11 @@ router.get('/collection', async (ctx) => {
 router.get('/collection/:id', async (ctx) => {
     await dao.getCollection(ctx.params.id)
         .then(response => {
-            ctx.body = response
+            if (typeof response !== 'undefined') {
+                ctx.body = response
+            } else {
+                ctx.status = 404
+            }
         })
 });
 
@@ -28,14 +32,22 @@ router.put('/collection', async (ctx) => {
 router.post('/collection/:id', async (ctx) => {
     await dao.updateCollection(ctx.params.id, ctx.request.body.name, ctx.request.body.owner_id)
         .then(response => {
-            ctx.body = response
+            if (typeof response !== 'undefined') {
+                ctx.body = response
+            } else {
+                ctx.status = 404
+            }
         })
 });
 
 router.delete('/collection/:id', async (ctx) => {
     await dao.deleteCollection(ctx.params.id)
-        .then(() => {
-            ctx.status = 204
+        .then(response => {
+            if (typeof response !== 'undefined') {
+                ctx.status = 204
+            } else {
+                ctx.status = 404
+            }
         })
 });
 

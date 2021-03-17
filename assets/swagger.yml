@@ -1,0 +1,257 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Collections for Hacker News!"
+  contact:
+    email: "tomas.valka@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:3000"
+schemes:
+  - http
+tags:
+  - name: "Collection"
+    description: "Access to Hacker Hews collections"
+paths:
+  /collection:
+    get:
+      tags:
+        - Collection
+      summary: "Returns first 10 collections"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Array of collections"
+          schema:
+            allOf:
+              - $ref: "#/definitions/Collection"
+              - example:
+                  - id: qNVwN3gBJXbJt6YRAoHV
+                    name: "Wallecnik's collection"
+                    owner_id: 42
+                  - id: wN3gBosiuhf836YRA4b9
+                    name: "Windows vulnerabilities"
+                    owner_id: 67
+    put:
+      tags:
+        - Collection
+      summary: "Create new collection"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "collection"
+          description: "Collection object that needs to be added to the collections"
+          required: true
+          schema:
+            allOf:
+              - $ref: "#/definitions/Collection"
+              - example:
+                  name: "Wallecnik's collection"
+                  owner_id: 42
+      responses:
+        "200":
+          description: "Collection you just saved"
+          schema:
+            allOf:
+              - $ref: "#/definitions/Collection"
+              - example:
+                  id: wN3gBosiuhf836YRA4b9
+                  name: "Wallecnik's collection"
+                  owner_id: 42
+
+  /collection/{collectionId}:
+    parameters:
+      - name: "collectionId"
+        in: "path"
+        description: "ID of collection"
+        required: true
+        type: string
+    get:
+      tags:
+        - "Collection"
+      summary: "Get stored collection with first 10 stories, without their comments"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Requested collection"
+          schema:
+            allOf:
+              - $ref: "#/definitions/Collection"
+              - example:
+                  id: wN3gBosiuhf836YRA4b9
+                  name: "Wallecnik's collection"
+                  owner_id: 42
+                  stories:
+                    - id: 26374268
+                      title: "How to crack crackers"
+                      time: 1615106532000
+                      author: "wallecnik"
+                      url: "http://example.com"
+        "404":
+          description: "Collection not found"
+    post:
+      tags:
+        - "Collection"
+      summary: "Updates a collection"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "collection"
+          description: "Collection object that needs to be added to the collections"
+          required: true
+          schema:
+            allOf:
+              - $ref: "#/definitions/Collection"
+              - example:
+                  name: "Wallecnik's collection"
+                  owner_id: 42
+      responses:
+        "200":
+          description: "Updated collection"
+          schema:
+            allOf:
+              - $ref: "#/definitions/Collection"
+              - example:
+                  id: wN3gBosiuhf836YRA4b9
+                  name: "Wallecnik's collection"
+                  owner_id: 42
+        "404":
+          description: "Collection not found"
+    delete:
+      tags:
+        - "Collection"
+      summary: "Deletes a collection"
+      responses:
+        "204":
+          description: "Collection deleted"
+        "404":
+          description: "Collection not found"
+  /addStory:
+    put:
+      tags:
+        - Story
+      summary: "Fetch and add Hacker News Story into specified collection"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "addStory"
+          description: "ID of HN story and collection ID"
+          required: true
+          schema:
+            allOf:
+              - type: object
+                properties:
+                  story_id:
+                    type: number
+                  collection_id:
+                    type: string
+              - example:
+                  story_id: 26374268
+                  collection_id: qNVwN3gBJXbJt6YRAoHV
+      responses:
+        "200":
+          description: "Collection you just saved"
+          schema:
+            allOf:
+              - $ref: "#/definitions/Collection"
+              - example:
+                  id: wN3gBosiuhf836YRA4b9
+                  name: "Wallecnik's collection"
+                  owner_id: 42
+  /story/{storyId}:
+    parameters:
+      - name: "storyId"
+        in: "path"
+        description: "ID of story"
+        required: true
+        type: number
+    get:
+      tags:
+        - "Story"
+      summary: "Get stored story with first 10 comments"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Requested story"
+          schema:
+            allOf:
+              - $ref: "#/definitions/Story"
+              - example:
+                  id: 26374268
+                  title: "How to crack crackers"
+                  time: 1615106532000
+                  author: "wallecnik"
+                  url: "http://example.com"
+                  comments:
+                    - id: 98245928
+                      text: "This totally works!"
+                      time: 1615106532000
+                      author: "general"
+                      parent: 26374268
+                    - id: 98245929
+                      text: "Are you sure?"
+                      time: 1615106532000
+                      author: "general"
+                      parent: 98245928
+        "404":
+          description: "Story not found"
+definitions:
+  Collection:
+    type: object
+    properties:
+      id:
+        type: number
+      name:
+        type: string
+      owner_id:
+        type: number
+      stories:
+        $ref: "#/definitions/Story"
+  Story:
+    type: object
+    properties:
+      id:
+        type: number
+      title:
+        type: string
+      time:
+        type: number
+      author:
+        type: string
+      url:
+        type: string
+      comments:
+        $ref: "#/definitions/Comment"
+  Comment:
+    type: object
+    properties:
+      id:
+        type: number
+      text:
+        type: string
+      time:
+        type: number
+      author:
+        type: string
+      parent:
+        description: Story or another comment
+        type: string
+
+
+
+
+
+
