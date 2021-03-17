@@ -53,8 +53,8 @@ export = class CollectionService {
             index: 'hacker_news_collection',
             type: '_doc',
             body: {
-                collection_name: name,
-                collection_owner_id: ownerId
+                name: name,
+                owner_id: ownerId
             }
         }).then(response => {
             return new Collection(response._id, name, ownerId)
@@ -67,8 +67,8 @@ export = class CollectionService {
             index: 'hacker_news_collection',
             type: '_doc',
             body: {
-                collection_name: name,
-                collection_owner_id: ownerId
+                name: name,
+                owner_id: ownerId
             }
         }).then(response => {
             return new Collection(response._id, name, ownerId)

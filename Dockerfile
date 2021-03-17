@@ -2,7 +2,8 @@ FROM node:14.16.0
 
 WORKDIR /home/node/app
 COPY . .
-RUN npm ci && npm run build
+RUN npm ci
+RUN npm run build
 
 EXPOSE 3000
 

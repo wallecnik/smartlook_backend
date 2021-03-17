@@ -6,7 +6,9 @@ Simply run `docker-compose up` and it will take care of starting the whole stack
 
 ## API
 
-Server API is documented at [localhost:3000/docs](localhost:3000/docs), after you run the stack. Or navigate to [api source file](assets/swagger.yml).
+Server API is documented at [localhost:3000/docs](localhost:3000/docs), after you run the stack. You can try the API directly from there. 
+
+Or navigate to [swagger.yml](assets/swagger.yml).
 
 ## Running tests
 

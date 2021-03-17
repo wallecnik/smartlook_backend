@@ -139,7 +139,7 @@ paths:
     put:
       tags:
         - Story
-      summary: "Fetch and add Hacker News Story into specified collection"
+      summary: "Fetch and add Hacker News Story into specified collection. Also synchronizes all comments for the specified story in background."
       consumes:
         - "application/json"
       produces:
@@ -162,14 +162,16 @@ paths:
                   collection_id: qNVwN3gBJXbJt6YRAoHV
       responses:
         "200":
-          description: "Collection you just saved"
+          description: "Story you just saved, without comments. They are being added in background."
           schema:
             allOf:
-              - $ref: "#/definitions/Collection"
+              - $ref: "#/definitions/Story"
               - example:
-                  id: wN3gBosiuhf836YRA4b9
-                  name: "Wallecnik's collection"
-                  owner_id: 42
+                  id: 26374268
+                  title: "How to crack crackers"
+                  time: 1615106532000
+                  author: "wallecnik"
+                  url: "http://example.com"
   /story/{storyId}:
     parameters:
       - name: "storyId"
