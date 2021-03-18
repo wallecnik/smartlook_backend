@@ -4,6 +4,7 @@ import Comment from "../model/Comment"
 import esClient from "./ESClient"
 import {NotFoundError} from "../exception/Exceptions";
 import {GetResponse, SearchResponse} from "elasticsearch";
+import {ESItem} from "../model/ESObjects";
 
 export = class StoryService {
 
@@ -304,12 +305,4 @@ class HNComment {
     }
 }
 
-interface ESItem {
-    readonly time: number
-    readonly title: string
-    readonly author: string
-    readonly url: string
-    readonly text: string
-    readonly parent: string
-    readonly collection: string
-}
+

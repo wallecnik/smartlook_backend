@@ -2,6 +2,7 @@ import Collection from "../model/Collection"
 import {GetResponse, SearchResponse} from "elasticsearch"
 import esClient from "./ESClient"
 import StoryService from "./StoryService"
+import {ESCollection} from "../model/ESObjects";
 
 const storyService = new StoryService()
 
@@ -96,9 +97,4 @@ export = class CollectionService {
         })
     }
 
-}
-
-interface ESCollection {
-    readonly name: string
-    readonly owner_id: number
 }

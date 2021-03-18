@@ -210,6 +210,67 @@ paths:
                       parent: 98245928
         "404":
           description: "Story not found"
+  /search:
+    get:
+      tags:
+        - "Search"
+      parameters:
+        - name: "q"
+          in: "query"
+          description: "String to be searched"
+          required: true
+          type: string
+      summary: "Perform a fulltext search on all data and returns top 10 collections, stories and comments."
+      description: |
+        Searches fields:
+        - collections: "name"
+        - collections: "title", "author"
+        - collections: "text", "author"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Search hits"
+          schema:
+            allOf:
+              - type: object
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: "#/definitions/Collection"
+                  stories:
+                    type: array
+                    items:
+                      $ref: "#/definitions/Story"
+                  comments:
+                    type: array
+                    items:
+                      $ref: "#/definitions/Comment"
+              - example:
+                  collections:
+                    - id: wN3gBosiuhf836YRA4b9
+                      name: "Wallecnik's collection"
+                      owner_id: 42
+                  stories:
+                    - id: 26374268
+                      title: "How to crack crackers"
+                      time: 1615106532000
+                      author: "wallecnik"
+                      url: "http://example.com"
+                  comments:
+                    - id: 98245928
+                      text: "This totally works!"
+                      time: 1615106532000
+                      author: "general"
+                      parent: 26374268
+                    - id: 98245929
+                      text: "Are you sure?"
+                      time: 1615106532000
+                      author: "general"
+                      parent: 98245928
+        "404":
+          description: "Story not found"
 definitions:
   Collection:
     type: object

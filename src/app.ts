@@ -4,6 +4,7 @@ import bodyParser from "koa-bodyparser";
 import json from "koa-json";
 import collectionRouter from "./router/CollectionRouter";
 import storyRouter from "./router/StoryRouter";
+import searchRouter from "./router/SearchRouter";
 import StoryService from "./service/StoryService";
 import cron from "node-cron";
 import {koaSwagger} from 'koa2-swagger-ui';
@@ -19,6 +20,7 @@ app.use(bodyParser());
 app.use(json());
 app.use(collectionRouter.routes())
 app.use(storyRouter.routes())
+app.use(searchRouter.routes())
 
 cron.schedule('*/15 * * * *', () => {
     storyService.syncAllStories()
