@@ -22,10 +22,6 @@ app.use(collectionRouter.routes())
 app.use(storyRouter.routes())
 app.use(searchRouter.routes())
 
-cron.schedule('*/15 * * * *', () => {
-    storyService.syncAllStories()
-});
-
 app.use(serve('assets'));
 app.use(
     koaSwagger({
@@ -40,5 +36,9 @@ initESIndices().then(_ => {
         console.log(`Server running at localhost:${port}`);
     })
 })
+
+cron.schedule('*/15 * * * *', () => {
+    storyService.syncAllStories()
+});
 
 

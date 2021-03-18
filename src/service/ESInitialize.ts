@@ -2,6 +2,17 @@ import esClient from "./ESClient"
 import axios from "axios";
 
 export = async function initESIndices(): Promise<void> {
+    let ready = false
+    do {
+        esClient.cluster.health({})
+            .then(response => {
+                ready = (response.status == 'yellow' || response.status == 'red')
+            })
+        if (!ready) {
+            console.log("Elasticsearch not ready yet")
+            await sleep(3000);
+        }
+    } while (!ready);
     await initIndex("hacker_news_collection", {
         properties: {
             name: {
@@ -64,4 +75,10 @@ async function initIndex(index: string, mapping: unknown): Promise<void> {
         await esClient.indices.create({index: index})
         await axios.put(`http://localhost:9200/${index}/_mapping`, mapping) // because client uses obsolete "type"
     }
+}
+
+async function sleep(ms: number): Promise<NodeJS.Timeout> {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
 }
