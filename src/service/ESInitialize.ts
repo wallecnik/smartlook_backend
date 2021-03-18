@@ -6,7 +6,7 @@ export = async function initESIndices(): Promise<void> {
     do {
         esClient.cluster.health({})
             .then(response => {
-                ready = (response.status == 'yellow' || response.status == 'red')
+                ready = (response.status == 'yellow' || response.status == 'green')
             })
         if (!ready) {
             console.log("Elasticsearch not ready yet")
