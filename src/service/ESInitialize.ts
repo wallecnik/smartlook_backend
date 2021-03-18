@@ -73,7 +73,7 @@ async function initIndex(index: string, mapping: unknown): Promise<void> {
         .then(x => exists = x)
     if (!exists) {
         await esClient.indices.create({index: index})
-        await axios.put(`http://localhost:9200/${index}/_mapping`, mapping) // because client uses obsolete "type"
+        await axios.put(`http://${process.env.ELASTICSEARCH_HOST}/${index}/_mapping`, mapping) // because client uses obsolete "type"
     }
 }
 
